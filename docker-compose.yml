@@ -11,3 +11,29 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  auth:
+    build:
+      context: ./Auth
+      dockerfile: ./Dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=dev password=abcde dbname=ecommerce sslmode=disable timezone=UTC connect_timeout=5"
+      SECRET_KEY: "ThisIsAVeryBigSecret"
+
+  postgres:
+    image: 'postgres:16.1'
+    ports:
+      - "5433:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: abcde
+      POSTGRES_DB: ecommerce
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
