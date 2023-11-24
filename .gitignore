@@ -8,5 +8,6 @@
 !*/
 
 !Makefile
+!Dockerfile
 
 /db-data
