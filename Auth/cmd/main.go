@@ -1,16 +1,13 @@
 package main
 
 import (
+	"Auth/internal"
 	"Auth/internal/db"
 	users "Auth/pb/proto"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 )
-
-type UserServer struct {
-	users.UnimplementedUserServiceServer
-}
 
 func main() {
 	db.InitDb()
@@ -22,7 +19,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	users.RegisterUserServiceServer(s, &UserServer{})
+	users.RegisterUserServiceServer(s, &internal.UserServer{})
 
 	log.Println("gRPC server started on port 50001")
 

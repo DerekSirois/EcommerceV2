@@ -1,4 +1,4 @@
-package internal
+package Handlers
 
 import (
 	"encoding/json"
@@ -6,9 +6,9 @@ import (
 )
 
 type jsonResponse struct {
-	Error   bool
-	Message string
-	Data    any
+	Error   bool   `json:"error"`
+	Message string `json:"message"`
+	Data    any    `json:"data,omitempty"`
 }
 
 func sendJson(w http.ResponseWriter, statusCode int, data any) error {
@@ -24,7 +24,7 @@ func sendJson(w http.ResponseWriter, statusCode int, data any) error {
 	return err
 }
 
-func readJson(r http.Request, data any) error {
+func readJson(r *http.Request, data any) error {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(data)
 	return err

@@ -8,7 +8,11 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func Register(_ context.Context, r *users.UserRequest) (*users.UserResponse, error) {
+type UserServer struct {
+	users.UnimplementedUserServiceServer
+}
+
+func (u *UserServer) Register(_ context.Context, r *users.UserRequest) (*users.UserResponse, error) {
 	input := r.GetUserEntry()
 
 	pass, err := HashPassword(input.Password)
@@ -16,7 +20,7 @@ func Register(_ context.Context, r *users.UserRequest) (*users.UserResponse, err
 		return &users.UserResponse{Result: "Error hashing the password"}, err
 	}
 
-	u := db.User{
+	user := db.User{
 		Id:       int(input.Id),
 		Username: input.Username,
 		Password: string(pass),
@@ -24,7 +28,7 @@ func Register(_ context.Context, r *users.UserRequest) (*users.UserResponse, err
 		IsAdmin:  input.IsAdmin,
 	}
 
-	err = db.Create(u)
+	err = db.Create(user)
 	if err != nil {
 		return &users.UserResponse{Result: "Error creating the user"}, err
 	}
@@ -32,7 +36,7 @@ func Register(_ context.Context, r *users.UserRequest) (*users.UserResponse, err
 	return &users.UserResponse{Result: "User created successfully"}, nil
 }
 
-func Login(_ context.Context, r *users.UserRequest) (*users.UserResponse, error) {
+func (u *UserServer) Login(_ context.Context, r *users.UserRequest) (*users.UserResponse, error) {
 	input := r.GetUserEntry()
 
 	uDb, err := db.GetByUsername(input.Username)
@@ -52,7 +56,7 @@ func Login(_ context.Context, r *users.UserRequest) (*users.UserResponse, error)
 	return &users.UserResponse{Result: token}, nil
 }
 
-func VerifyJWT(_ context.Context, r *users.JWTRequest) (*users.JWTResponse, error) {
+func (u *UserServer) VerifyJWT(_ context.Context, r *users.JWTRequest) (*users.JWTResponse, error) {
 	tokenInput := r.GetToken()
 	var userClaim UserClaim
 	token, err := jwt.ParseWithClaims(tokenInput, &userClaim, func(token *jwt.Token) (interface{}, error) {
