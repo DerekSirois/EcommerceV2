@@ -13,5 +13,7 @@ func Routes() http.Handler {
 	router.HandleFunc("/register", Handlers.Register).Methods("POST")
 	router.HandleFunc("/login", Handlers.Login).Methods("POST")
 
+	router.HandleFunc("/product", Handlers.GetAllProduct).Methods("GET")
+
 	return router
 }

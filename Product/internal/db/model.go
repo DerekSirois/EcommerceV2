@@ -5,24 +5,24 @@ type Product struct {
 	Name        string
 	Description string
 	Quantity    int
-	Price       float64
+	Price       float32
 }
 
 func GetAll() ([]*Product, error) {
 	p := make([]*Product, 0)
-	err := Db.Select(p, "SELECT * FROM products")
+	err := Db.Select(&p, "SELECT * FROM products")
 	return p, err
 }
 
 func GetAllAvailable() ([]*Product, error) {
 	p := make([]*Product, 0)
-	err := Db.Select(p, "SELECT * FROM products WHERE quantity > 0")
+	err := Db.Select(&p, "SELECT * FROM products WHERE quantity > 0")
 	return p, err
 }
 
 func GetAllOutOfStock() ([]*Product, error) {
 	p := make([]*Product, 0)
-	err := Db.Select(p, "SELECT * FROM products WHERE quantity <= 0")
+	err := Db.Select(&p, "SELECT * FROM products WHERE quantity <= 0")
 	return p, err
 }
 

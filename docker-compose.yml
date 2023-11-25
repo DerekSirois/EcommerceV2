@@ -24,6 +24,17 @@ services:
       DSN: "host=postgres port=5432 user=dev password=abcde dbname=ecommerce sslmode=disable timezone=UTC connect_timeout=5"
       SECRET_KEY: "ThisIsAVeryBigSecret"
 
+  product:
+    build:
+      context: ./Product
+      dockerfile: ./Dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=dev password=abcde dbname=ecommerce sslmode=disable timezone=UTC connect_timeout=5"
+
   postgres:
     image: 'postgres:16.1'
     ports:

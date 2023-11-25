@@ -3,7 +3,7 @@ up:
 	docker-compose up -d
 	@echo "Docker images started!"
 
-up_build: build_gateway build_auth
+up_build: build_gateway build_auth build_product
 	@echo "Stopping docker images (if running...)"
 	docker-compose down
 	@echo "Building (when required) and starting docker images..."
@@ -12,6 +12,7 @@ up_build: build_gateway build_auth
 	docker image prune -f
 	rm ./Gateway/gatewayApp
 	rm ./Auth/authApp
+	rm ./Product/productApp
 
 down:
 	@echo "Stopping docker compose..."
@@ -26,4 +27,9 @@ build_gateway:
 build_auth:
 	@echo "Building gateway binary..."
 	cd ./Auth && env GOOS=linux CGO_ENABLED=0 go build -o authApp ./cmd
+	@echo "Done!"
+
+build_product:
+	@echo "Building gateway binary..."
+	cd ./Product && env GOOS=linux CGO_ENABLED=0 go build -o productApp ./cmd
 	@echo "Done!"
