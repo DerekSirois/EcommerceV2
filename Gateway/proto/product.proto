@@ -42,5 +42,5 @@ service ProductService{
   rpc GetById(ProductIdRequest) returns (ProductSingleResponse);
   rpc Create(ProductRequest) returns (ProductResponse);
   rpc Update(ProductRequest) returns (ProductResponse);
-  rpc Delete(ProductRequest) returns (ProductResponse);
+  rpc Delete(ProductIdRequest) returns (ProductResponse);
 }
