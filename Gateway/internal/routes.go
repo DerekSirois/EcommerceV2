@@ -16,9 +16,9 @@ func Routes() http.Handler {
 	router.HandleFunc("/product", Handlers.GetAllProduct).Methods("GET")
 	router.HandleFunc("/product/available", Handlers.GetAllAvailableProduct).Methods("GET")
 	router.HandleFunc("/product/outofstock", Handlers.GetAllOutOfStockProduct).Methods("GET")
-	router.HandleFunc("/product", Handlers.CreateProduct).Methods("POST")
-	router.HandleFunc("/product/{id:[0-9]+}", Handlers.UpdateProduct).Methods("PUT")
-	router.HandleFunc("/product/{id:[0-9]+}", Handlers.DeleteProduct).Methods("DELETE")
+	router.HandleFunc("/product", Handlers.VerifyJWT(Handlers.CreateProduct)).Methods("POST")
+	router.HandleFunc("/product/{id:[0-9]+}", Handlers.VerifyJWT(Handlers.UpdateProduct)).Methods("PUT")
+	router.HandleFunc("/product/{id:[0-9]+}", Handlers.VerifyJWT(Handlers.DeleteProduct)).Methods("DELETE")
 
 	return router
 }
